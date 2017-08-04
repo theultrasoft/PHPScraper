@@ -1,0 +1,20 @@
+{
+    "name": "theultrasoft/phpscraper",
+    "description": "PHP based powerful scraper and web automation library",
+    "license": "GPL",
+    "authors": [
+        {
+            "name": "Sukanta Paul",
+            "email": "sptutusukanta@gmail.com"
+        }
+    ],
+    "autoload":{
+        "psr-4":{
+            "PHPScraper\\": "src/"
+        }
+    },
+    "require": {
+        "curl/curl": "^1.7",
+        "emanueleminotto/simple-html-dom": "^1.5"
+    }
+}
