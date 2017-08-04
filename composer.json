@@ -1,5 +1,5 @@
 {
-    "name": "theultrasoft/phpscraper",
+    "name": "phpscraper/phpscraper",
     "description": "PHP based powerful scraper and web automation library",
     "license": "GPL",
     "authors": [
@@ -10,7 +10,7 @@
     ],
     "autoload":{
         "psr-4":{
-            "PHPScraper\\": "src/"
+            "PHPScraper\\": "PHPScraper/"
         }
     },
     "require": {

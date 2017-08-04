@@ -3,10 +3,10 @@
 require_once '../vendor/autoload.php';
 require_once '../src/Utils.php';
 require_once '../src/ExtendedDOM.php';
-require_once '../src/PHPScraperEngine.php';
+require_once '../src/Engine.php';
 
 
-$engine = new \PHPScraper\PHPScraperEngine();
+$engine = new \PHPScraper\Engine();
 $engine->get('https://www.yellowpages.in/', NULL, function( $headers, $body ) {
     $body->find('a', 1)->click(function ($headers, $body) {
         $body->find('form')->submit([], function( $headers, $body, $request ){

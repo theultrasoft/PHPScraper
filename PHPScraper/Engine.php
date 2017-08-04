@@ -5,7 +5,7 @@ namespace PHPScraper;
 
 use Curl\Curl;
 
-class PHPScraperEngine extends Curl {
+class Engine extends Curl {
 
 
     const METHOD_GET    = 'get';
@@ -35,7 +35,7 @@ class PHPScraperEngine extends Curl {
      * @param string $url
      * @param null|array $data
      * @param null|callable $callback
-     * @return PHPScraperEngine
+     * @return Engine
      * @throws \Exception
      */
 
@@ -86,7 +86,7 @@ class PHPScraperEngine extends Curl {
      * @param string $url
      * @param null|array $data
      * @param null|callable $callback
-     * @return PHPScraperEngine
+     * @return Engine
      */
     public function get($url, $data = NULL, $callback = NULL){
         return $this->request( self::METHOD_GET, $url, $data, $callback );
@@ -96,7 +96,7 @@ class PHPScraperEngine extends Curl {
      * @param string $url
      * @param null|array $data
      * @param null|callable $callback
-     * @return PHPScraperEngine
+     * @return Engine
      */
     public function post($url, $data = NULL, $callback = NULL){
         return $this->request( self::METHOD_GET, $url, $data, $callback );
@@ -106,7 +106,7 @@ class PHPScraperEngine extends Curl {
      * @param string $url
      * @param null|array $data
      * @param null|callable $callback
-     * @return PHPScraperEngine
+     * @return Engine
      */
     public function put($url, $data = NULL, $callback = NULL){
         return $this->request( self::METHOD_PUT, $url, $data, $callback );
@@ -116,7 +116,7 @@ class PHPScraperEngine extends Curl {
      * @param string $url
      * @param null|array $data
      * @param null|callable $callback
-     * @return PHPScraperEngine
+     * @return Engine
      */
     public function patch($url, $data = NULL, $callback = NULL){
         return $this->request( self::METHOD_PATCH, $url, $data, $callback );
@@ -126,7 +126,7 @@ class PHPScraperEngine extends Curl {
      * @param string $url
      * @param null|array $data
      * @param null|callable $callback
-     * @return PHPScraperEngine
+     * @return Engine
      */
     public function delete($url, $data = NULL, $callback = NULL){
         return $this->request( self::METHOD_DELETE, $url, $data, $callback );

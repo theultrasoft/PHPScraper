@@ -7,7 +7,7 @@ class ExtendedDOM {
 
     /**
      * @var \simple_html_dom_node $dom
-     * @var \PHPScraper\PHPScraperEngine $engine
+     * @var \PHPScraper\Engine $engine
      */
     protected $dom;
     public $engine;
@@ -15,7 +15,7 @@ class ExtendedDOM {
     /**
      * ExtendedDOM constructor.
      * @param $dom
-     * @param null|PHPScraperEngine $engine
+     * @param null|Engine $engine
      */
     public function __construct($dom, &$engine = NULL ){
 
@@ -34,7 +34,7 @@ class ExtendedDOM {
         $this->dom = $domArray;
 
         if( !$engine ){
-            $this->engine = new PHPScraperEngine();
+            $this->engine = new Engine();
         }
         else $this->engine = $engine;
 
@@ -174,7 +174,7 @@ class ExtendedDOM {
 
         $this->each( function ( $i, $el ) use( $data, $callback ) {
             if( 'form' == $el->tag ){
-                $method = $el->method ? $el->method : PHPScraperEngine::METHOD_GET;
+                $method = $el->method ? $el->method : Engine::METHOD_GET;
                 $url    = $el->action ? $el->action : '';
                 $this->engine->request( $method, $url, $data, $callback);
             }
