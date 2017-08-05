@@ -13,6 +13,7 @@ Or if you prefer to add it manually using `composer.json` add this:
 This will install the latest version (currently: v0.1.1-beta) of PHPScraper into your project.
 
 ## Usage examples:
+```php
     $engine = new \PHPScraper\Engine();
     $engine->get('https://www.example.com/', NULL, function( $headers, $body ) {
         $body->find('a.some-link')->click(function ($headers, $body) {
@@ -20,6 +21,7 @@ This will install the latest version (currently: v0.1.1-beta) of PHPScraper into
             // Do whatever you want to do
         });
     });
+```
 
 ## Licence:
 The source code is licensed under [GPLv3](https://www.gnu.org/licenses/gpl-3.0.en.html).
