@@ -10,7 +10,7 @@ If you have composer installed run command:
 Or if you prefer to add it manually using `composer.json` add this:
     "phpscraper/phpscraper": "*"
     
-This will install the latest version of PHPScraper into your project.
+This will install the latest version (currently: v0.1.1-beta) of PHPScraper into your project.
 
 ## Usage examples:
     $engine = new \PHPScraper\Engine();
