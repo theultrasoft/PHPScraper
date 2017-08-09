@@ -179,15 +179,15 @@ class ExtendedDOM {
      * @param null|callable $callback
      * @return $this
      */
-    public function submit( $data = [], $callback = NULL ){
+    public function submit( $data = [], $callback = NULL, $settings = [] ){
 
         $data = array_merge( $this->fields(), $data );
 
-        $this->each( function ( $i, $el ) use( $data, $callback ) {
+        $this->each( function ( $i, $el ) use( $data, $callback, $settings ) {
             if( 'form' == $el->tag ){
                 $method = $el->method ? $el->method : Engine::METHOD_GET;
                 $url    = $el->action ? $el->action : '';
-                $this->engine->request( $method, $url, $data, $callback);
+                $this->engine->request( $method, $url, $data, $callback, $settings);
             }
         } );
 
