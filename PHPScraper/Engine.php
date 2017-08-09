@@ -35,11 +35,12 @@ class Engine extends Curl {
      * @param string $url
      * @param null|array $data
      * @param null|callable $callback
+     * @param array $settings
      * @return Engine
      * @throws \Exception
      */
 
-    public function request( $method, $url, $data = NULL, $callback = NULL ){
+    public function request( $method, $url, $data = NULL, $callback = NULL, $settings = [] ){
 
         if( empty( $this->baseURL ) ) $this->baseURL = $url;
 
@@ -54,6 +55,22 @@ class Engine extends Curl {
         }
 
         $absoluteURL = $this->absoluteURL( $url );
+
+        if( isset( $settings['debug'] ) AND $settings['debug'] === true ){
+            echo "\n\n======= DEBUG ======\n";
+            echo 'Request: ' . $absoluteURL . "\n";
+            echo 'Method: ' . $method . "\n";
+            echo 'Data: ' . "\n";
+            var_dump( $data );
+            echo "\n======= END ======\n\n";
+        }
+
+        if( isset( $settings['cookies'] ) ){
+            foreach( $settings['cookies'] as $key => $val ){
+                $this->setCookie( $key, $val );
+            }
+        }
+
         parent::$method($absoluteURL, (array) $data);
 
         if(is_callable( $callback )){
@@ -74,8 +91,13 @@ class Engine extends Curl {
             $newEngine->response_headers = null;
             $newEngine->response = null;
 
-            $dom = new ExtendedDOM($this->response, $newEngine);
-            call_user_func( $callback, $this->response_headers, $dom, $this->request_headers );
+            if( isset( $settings['dom'] ) AND $settings['dom'] === false ){
+                $body = $this->response;
+            }else{
+                $body = new ExtendedDOM($this->response, $newEngine);
+            }
+
+            call_user_func( $callback, $this->response_headers, $body, $this->request_headers );
         }
 
         return $this;
@@ -86,50 +108,55 @@ class Engine extends Curl {
      * @param string $url
      * @param null|array $data
      * @param null|callable $callback
+     * @param array $settings
      * @return Engine
      */
-    public function get($url, $data = NULL, $callback = NULL){
-        return $this->request( self::METHOD_GET, $url, $data, $callback );
+    public function get($url, $data = NULL, $callback = NULL, $settings = []){
+        return $this->request( self::METHOD_GET, $url, $data, $callback, $settings );
     }
 
     /**
      * @param string $url
      * @param null|array $data
      * @param null|callable $callback
+     * @param array $settings
      * @return Engine
      */
-    public function post($url, $data = NULL, $callback = NULL){
-        return $this->request( self::METHOD_GET, $url, $data, $callback );
+    public function post($url, $data = NULL, $callback = NULL, $settings = []){
+        return $this->request( self::METHOD_POST, $url, $data, $callback, $settings );
     }
 
     /**
      * @param string $url
      * @param null|array $data
      * @param null|callable $callback
+     * @param array $settings
      * @return Engine
      */
-    public function put($url, $data = NULL, $callback = NULL){
-        return $this->request( self::METHOD_PUT, $url, $data, $callback );
+    public function put($url, $data = NULL, $callback = NULL, $settings = []){
+        return $this->request( self::METHOD_PUT, $url, $data, $callback, $settings );
     }
 
     /**
      * @param string $url
      * @param null|array $data
      * @param null|callable $callback
+     * @param array $settings
      * @return Engine
      */
-    public function patch($url, $data = NULL, $callback = NULL){
-        return $this->request( self::METHOD_PATCH, $url, $data, $callback );
+    public function patch($url, $data = NULL, $callback = NULL, $settings = []){
+        return $this->request( self::METHOD_PATCH, $url, $data, $callback, $settings );
     }
 
     /**
      * @param string $url
      * @param null|array $data
      * @param null|callable $callback
+     * @param array $settings
      * @return Engine
      */
-    public function delete($url, $data = NULL, $callback = NULL){
-        return $this->request( self::METHOD_DELETE, $url, $data, $callback );
+    public function delete($url, $data = NULL, $callback = NULL, $settings = []){
+        return $this->request( self::METHOD_DELETE, $url, $data, $callback, $settings );
     }
 
 
