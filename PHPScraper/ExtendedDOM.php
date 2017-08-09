@@ -153,9 +153,20 @@ class ExtendedDOM {
     public function fields(){
 
         $inputs = [];
-        $this->find('input')->each(function($i, $input) use ( &$inputs ) {
+        $this->find('input, select, textarea')->each(function($i, $input) use ( &$inputs ) {
+
             if( !empty( $input->name ) ){
-                $inputs[ $input->name ] = $input->value;
+
+                $value = '';
+                if( $input->tag == 'input' ){
+                    $value = $input->value;
+                }else if( $input->tag == 'select' ){
+                    // TODO: find selected option
+                }else{
+                    $value = $input->innertext;
+                }
+
+                $inputs[ $input->name ] = $value ? $value : '';
             }
         });
 
