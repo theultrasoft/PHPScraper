@@ -16,18 +16,56 @@ class Engine extends Curl {
 
 
     public $baseURL = '';
+    protected $config, $proxies = [];
 
-    public function __construct(){
+    public function __construct( $config ){
 
         parent::__construct();
 
-        $this->setOpt(CURLOPT_AUTOREFERER, true);
-        $this->setOpt(CURLOPT_FOLLOWLOCATION, true);
+        $this->config = [
+            'options' => [
+                CURLOPT_AUTOREFERER => true,
+                CURLOPT_FOLLOWLOCATION => true
+            ]
+        ];
 
+        $this->configure( $config );
+    }
+
+
+    public function configure( $config = [] ){
+
+        $this->config = array_replace_recursive( $this->config, $config );
+
+        // === Forced Options: These options couldn't be changed.
+        $this->config['options'][CURLOPT_RETURNTRANSFER] = true;
+        $this->config['options'][CURLOPT_HEADER] = true;
+        $this->config['options'][CURLINFO_HEADER_OUT] = true;
+
+        if( isset( $this->config['options'] ) ){
+            foreach( $this->config['options'] as $option => $value ){
+                $this->setOpt( $option, $value );
+            }
+        }
     }
 
     public function absoluteURL( $url = '' ){
         return Utils::rel2absURL( $url, $this->baseURL );
+    }
+
+
+    public function addProxy($proxyName, $ip, $port, $user = '', $pass = '', $type = CURLPROXY_HTTP ){
+
+        if( empty( $proxyName ) ) $proxyName = "$ip:$port";
+
+        $this->proxies[ $proxyName ] = [
+            'ip' => $ip,
+            'port' => $port,
+            'user' => $user,
+            'pass' => $pass,
+            'type' => $type
+        ];
+
     }
 
     /**
@@ -44,6 +82,8 @@ class Engine extends Curl {
 
         if( empty( $this->baseURL ) ) $this->baseURL = $url;
 
+        $method = strtolower( $method );
+
         if( !in_array( $method, [
             self::METHOD_GET,
             self::METHOD_POST,
@@ -56,6 +96,8 @@ class Engine extends Curl {
 
         $absoluteURL = $this->absoluteURL( $url );
 
+
+        // Debug Settings ===========================
         if( isset( $settings['debug'] ) AND $settings['debug'] === true ){
             echo "\n\n======= DEBUG ======\n";
             echo 'Request: ' . $absoluteURL . "\n";
@@ -65,9 +107,18 @@ class Engine extends Curl {
             echo "\n======= END ======\n\n";
         }
 
+        // Cookies Settings ===========================
         if( isset( $settings['cookies'] ) ){
             foreach( $settings['cookies'] as $key => $val ){
                 $this->setCookie( $key, $val );
+            }
+        }
+
+
+        // Headers Settings ===========================
+        if( isset( $settings['headers'] ) ){
+            foreach( $settings['headers'] as $key => $val ){
+                $this->setHeader( $key, $val );
             }
         }
 
