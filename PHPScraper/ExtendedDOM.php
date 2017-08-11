@@ -136,12 +136,12 @@ class ExtendedDOM {
         } );
     }
 
-    public function click($callback = NULL){
+    public function click($callback = NULL, $settings = []){
 
-        $this->each(function ($i, $el) use ($callback){
+        $this->each(function ($i, $el) use ($callback, $settings){
             if( 'a' == $el->tag ){
                 if( !empty( $el->href ) ){
-                    $this->engine->get($el->href, NULL, $callback);
+                    $this->engine->get($el->href, NULL, $callback, $settings);
                 }
             }
         });
