@@ -126,7 +126,11 @@ class ExtendedDOM {
     }
 
     public function eq( $index ){
-        // TODO: Get element by index
+        if( isset( $this->dom[ $index ] ) ){
+            return new ExtendedDOM( $this->dom[ $index ] );
+        }
+
+        throw new \Exception("Invalid index: $index");
     }
 
     public function filter($selector, $index = false){
