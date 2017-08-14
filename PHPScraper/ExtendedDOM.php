@@ -6,7 +6,6 @@ namespace PHPScraper;
 class ExtendedDOM {
 
     /**
-     * @var \simple_html_dom_node $dom
      * @var \PHPScraper\Engine $engine
      */
     protected $dom;
@@ -38,6 +37,17 @@ class ExtendedDOM {
         }
         else $this->engine = $engine;
 
+    }
+
+
+    /**
+     * Returns the string representation of DOM. Please note
+     * that only the first selected item will be returned, all
+     * other selections will be ignored.
+     * @return mixed
+     */
+    public function __toString(){
+        return $this->simpleDom()->__toString();
     }
 
     protected function parseDom( $dom ){
@@ -125,8 +135,19 @@ class ExtendedDOM {
 
     }
 
+
+    /**
+     * Get the ExtendedDOM element at the specified index from last selected elements.
+     * @param $index
+     * @return ExtendedDOM
+     * @throws \Exception
+     */
     public function eq( $index ){
-        // TODO: Get element by index
+        if( isset( $this->dom[ $index ] ) ){
+            return new ExtendedDOM( $this->dom[ $index ] );
+        }
+
+        throw new \Exception("Invalid index: $index");
     }
 
     public function filter($selector, $index = false){

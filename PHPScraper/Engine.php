@@ -18,7 +18,12 @@ class Engine extends Curl {
     public $baseURL = '';
     protected $config, $proxies = [];
 
-    public function __construct( $config ){
+
+    /**
+     * Creates a new PHPScraper Engine.
+     * @param array $config Add configurations during initialization.
+     */
+    public function __construct( $config = [] ){
 
         parent::__construct();
 
@@ -49,11 +54,27 @@ class Engine extends Curl {
         }
     }
 
+
+    /**
+     * Get the absolute url relative to $url parameter. Giving empty
+     * value to $url will return last requested url.
+     * @param string $url
+     * @return bool
+     */
     public function absoluteURL( $url = '' ){
         return Utils::rel2absURL( $url, $this->baseURL );
     }
 
 
+    /**
+     * Add a proxy
+     * @param $proxyName
+     * @param $ip
+     * @param $port
+     * @param string $user
+     * @param string $pass
+     * @param int $type
+     */
     public function addProxy($proxyName, $ip, $port, $user = '', $pass = '', $type = CURLPROXY_HTTP ){
 
         if( empty( $proxyName ) ) $proxyName = "$ip:$port";
@@ -135,24 +156,14 @@ class Engine extends Curl {
 
         parent::$method($absoluteURL, (array) $data);
 
+
         if(is_callable( $callback )){
 
+            // Creates a new sub-engine for new ExtendedDOM
             $newEngine = clone($this);
             $newEngine->baseURL = $absoluteURL;
 
-            $newEngine->error = false;
-            $newEngine->error_code = 0;
-            $newEngine->error_message = null;
-            $newEngine->curl_error = false;
-            $newEngine->curl_error_code = 0;
-            $newEngine->curl_error_message = null;
-            $newEngine->http_error = false;
-            $newEngine->http_error_message = null;
-            $newEngine->http_status_code = 0;
-            $newEngine->request_headers = null;
-            $newEngine->response_headers = null;
-            $newEngine->response = null;
-
+            // if dom is false, it will not generate ExtendedDOM element for response.
             if( isset( $settings['dom'] ) AND $settings['dom'] === false ){
                 $body = $this->response;
             }else{
@@ -167,10 +178,11 @@ class Engine extends Curl {
 
 
     /**
+     * Do a GET Request.
      * @param string $url
-     * @param null|array $data
-     * @param null|callable $callback
-     * @param array $settings
+     * @param null|array $data Send GET parameters
+     * @param null|callable $callback This callback will be invoked once the request is complete
+     * @param array $settings Add some additional configuration during this request.
      * @return Engine
      */
     public function get($url, $data = NULL, $callback = NULL, $settings = []){
@@ -178,10 +190,11 @@ class Engine extends Curl {
     }
 
     /**
+     * Do a POST Request
      * @param string $url
-     * @param null|array $data
-     * @param null|callable $callback
-     * @param array $settings
+     * @param null|array $data Send POST parameters
+     * @param null|callable $callback This callback will be invoked once the request is complete
+     * @param array $settings Add some additional configuration during this request.
      * @return Engine
      */
     public function post($url, $data = NULL, $callback = NULL, $settings = []){
@@ -189,10 +202,11 @@ class Engine extends Curl {
     }
 
     /**
+     * Do a PUT request
      * @param string $url
-     * @param null|array $data
-     * @param null|callable $callback
-     * @param array $settings
+     * @param null|array $data Send PUT parameters
+     * @param null|callable $callback This callback will be invoked once the request is complete
+     * @param array $settings Add some additional configuration during this request.
      * @return Engine
      */
     public function put($url, $data = NULL, $callback = NULL, $settings = []){
@@ -200,10 +214,11 @@ class Engine extends Curl {
     }
 
     /**
+     * Do a PATCH request
      * @param string $url
-     * @param null|array $data
-     * @param null|callable $callback
-     * @param array $settings
+     * @param null|array $data Send PATCH parameters
+     * @param null|callable $callback This callback will be invoked once the request is complete
+     * @param array $settings Add some additional configuration during this request.
      * @return Engine
      */
     public function patch($url, $data = NULL, $callback = NULL, $settings = []){
@@ -211,10 +226,11 @@ class Engine extends Curl {
     }
 
     /**
+     * Do a DELETE request
      * @param string $url
-     * @param null|array $data
-     * @param null|callable $callback
-     * @param array $settings
+     * @param null|array $data Send DELETE parameters
+     * @param null|callable $callback This callback will be invoked once the request is complete
+     * @param array $settings Add some additional configuration during this request.
      * @return Engine
      */
     public function delete($url, $data = NULL, $callback = NULL, $settings = []){
