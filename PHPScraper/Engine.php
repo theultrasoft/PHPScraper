@@ -68,6 +68,17 @@ class Engine extends Curl {
 
     }
 
+
+    /**
+     * Clone is a re-initialization of Engine with same configuration.
+     * This helps in re creating internal variables rather than pointing
+     * to same object variables.
+     * @return Engine
+     */
+    public function __clone(){
+        return new self( $this->config );
+    }
+
     /**
      * @param $method
      * @param string $url
