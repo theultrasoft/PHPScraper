@@ -18,7 +18,7 @@ class Engine extends Curl {
     public $baseURL = '';
     protected $config, $proxies = [];
 
-    public function __construct( $config ){
+    public function __construct( $config = [] ){
 
         parent::__construct();
 
@@ -139,19 +139,6 @@ class Engine extends Curl {
 
             $newEngine = clone($this);
             $newEngine->baseURL = $absoluteURL;
-
-            $newEngine->error = false;
-            $newEngine->error_code = 0;
-            $newEngine->error_message = null;
-            $newEngine->curl_error = false;
-            $newEngine->curl_error_code = 0;
-            $newEngine->curl_error_message = null;
-            $newEngine->http_error = false;
-            $newEngine->http_error_message = null;
-            $newEngine->http_status_code = 0;
-            $newEngine->request_headers = null;
-            $newEngine->response_headers = null;
-            $newEngine->response = null;
 
             if( isset( $settings['dom'] ) AND $settings['dom'] === false ){
                 $body = $this->response;
