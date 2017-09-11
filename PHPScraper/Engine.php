@@ -163,16 +163,16 @@ class Engine extends Curl {
             $newEngine = clone($this);
             $newEngine->baseURL = $absoluteURL;
 
+            $headerSize = curl_getinfo($this->curl, CURLINFO_HEADER_SIZE);
+            $body = substr( $this->response, $headerSize );
+
             // if dom is false, it will not generate ExtendedDOM element for response.
-            if( isset( $settings['dom'] ) AND $settings['dom'] === false ){
-                $body = $this->response;
-            }else{
+            if( !isset( $settings['dom'] ) OR $settings['dom'] == true ){
                 $body = new ExtendedDOM($this->response, $newEngine);
             }
 
             call_user_func( $callback, $this->response_headers, $body, $this->request_headers );
         }
-
         return $this;
     }
 
