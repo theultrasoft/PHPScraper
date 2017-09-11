@@ -18,7 +18,7 @@ Or if you prefer to add it manually using `composer.json` add this:
 "phpscraper/phpscraper": "*"
 ```
     
-This will install the latest version (currently: v0.1.5-beta) of PHPScraper into your project.
+This will install the latest version (currently: v0.1.6-beta) of PHPScraper into your project.
 
 ## Usage examples:
 ```php
